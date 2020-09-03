@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
-    before_action :authorized
-
+    
     def secret
         ENV["JWT_SECRET_KEY"]
     end
@@ -75,16 +74,6 @@ class ApplicationController < ActionController::Base
       
       decoded[0]['id']
     end
-    
-    # # def getClassFromToken
-    # #     decoded = decodeToken
-
-    # #     unless decoded && decoded [0] && decoded[0]['role']
-    # #       return nil
-    # #     end
-
-    # #     decoded[0]['role']
-    # # end
       
     def authorized?(user)
         getIdFromToken == user.id

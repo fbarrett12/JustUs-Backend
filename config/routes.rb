@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :follows
   resources :causes
-  resources :users, param: :_name
+  resources :users
 
   post "login", to: "auth#login"
   get "auth", to: "auth#persist"
