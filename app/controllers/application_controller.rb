@@ -42,14 +42,13 @@ class ApplicationController < ActionController::Base
   
 
     def createToken(user)
-        JWT.encode({'id': user[:data][:id]}, secret, 'HS256')
+        JWT.encode({'id': user[:id]}, secret, 'HS256')
     end
 
     def tokenForAccount(user)
-
-        { id: user[:data][:id],
+        { id: user[:id],
           token: createToken(user),
-          userInfo: user[:data][:attributes]
+          userInfo: user[:user_name]
         }
     end
 

@@ -9,13 +9,20 @@ class UsersController < ApplicationController
     end
 
     def create
-        @user = User.create(user_params)
-        if @user.valid?
-            user = @user
-            token = JWT.encode({user_id: user.id}, secret, 'HS256')
-            render json: {user: UserSerializer.new(@user).serialized_json, token: token}
+        # @user = User.new(user_params)
+        # if @user.valid?
+        #     user = @user
+        #     token = JWT.encode({user_id: user.id}, secret, 'HS256')
+        #     render json: {user: UserSerializer.new(@user).serialized_json, token: token}
+        # else
+        #     render json: {errors: user.errors.full_messages}
+        # end
+        @user = User.new(user_params)
+        if(@user.save)
+            token = tokenForAccount(@user)
+            render json: {user: UserSerializer.new(@user).serializable_hash, token: token}
         else
-            render json: {errors: user.errors.full_messages}
+            render json: {errors: @user.errors.full_messages}
         end
     end
 
@@ -38,7 +45,7 @@ class UsersController < ApplicationController
     private
 
     def user_params
-        params.require(:user).permit(:username, :password)
+        params.permit(:user_name, :password)
     end
 
     def secret
